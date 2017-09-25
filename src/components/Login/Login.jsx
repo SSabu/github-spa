@@ -5,7 +5,7 @@ import { Grid, Card, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { fetchOrgs } from '../../actions/renderActions';
+import { displayOrgs } from '../../actions/renderActions';
 import injectWidgetId from '../../utils/utils';
 import './Login.css';
 
@@ -13,7 +13,7 @@ export class Login extends Component {
   componentDidMount() {
     if (cookie.load('userName') !== undefined) {
       const name = cookie.load('userName');
-      this.props.fetchOrgs(name);
+      this.props.displayOrgs(name);
     }
   }
   render() {
@@ -28,7 +28,8 @@ export class Login extends Component {
       width: '300px',
     };
 
-    const GITHUB_OAUTH_URL = process.env.REACT_APP_GITHUB_OAUTH_URL;
+    const GITHUB_OAUTH_URL = `${process.env.REACT_APP_GITHUB_API_URL}/auth/github`;
+
     return (
       <Grid verticalAlign={'middle'}>
         <Grid.Row centered verticalAlign={'middle'}>
@@ -54,7 +55,7 @@ export class Login extends Component {
 
 Login.propTypes = {
   /* eslint-disable react/no-unused-prop-types, react/require-default-props */
-  fetchOrgs: PropTypes.func.isRequired,
+  displayOrgs: PropTypes.func.isRequired,
   userName: PropTypes.string,
 };
 
@@ -70,7 +71,7 @@ export const mapStateToProps = (state, ownProps) => {
 };
 
 export const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchOrgs,
+  displayOrgs,
 }, dispatch);
 
 export default injectWidgetId(connect(mapStateToProps, mapDispatchToProps)(Login));
